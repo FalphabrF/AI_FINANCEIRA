@@ -1,0 +1,188 @@
+# ============================================================
+
+# DOCKER COMPOSE - INFRAESTRUTURA DO SISTEMA
+
+# ============================================================
+
+# Serviços:
+
+# - app (engine/executor)
+
+# - db (PostgreSQL)
+
+# - n8n (automação e webhooks)
+
+# - dashboard (Streamlit)
+
+#
+
+# CARACTERÍSTICAS:
+
+# - Persistência de dados
+
+# - Restart automático
+
+# - Healthchecks
+
+# - Rede isolada
+
+# ============================================================
+
+version: "3.9"
+
+services:
+
+# =========================================================
+
+# BANCO DE DADOS - POSTGRESQL
+
+# =========================================================
+
+db:
+  image: postgres:15
+  container_name: agente_db
+  restart: unless-stopped
+
+  
+  environment:
+    POSTGRES_DB: agente_financeiro
+    POSTGRES_USER: postgres
+    POSTGRES_PASSWORD: postgres
+
+  ports:
+    - "5432:5432"
+
+  volumes:
+    - postgres_data:/var/lib/postgresql/data
+
+  networks:
+    - agente_network
+
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U postgres"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+ 
+
+# =========================================================
+
+# APLICAÇÃO PRINCIPAL (ENGINE + EXECUTOR)
+
+# =========================================================
+
+app:
+  build: .
+  container_name: agente_app
+  restart: unless-stopped
+
+  
+  depends_on:
+    db:
+      condition: service_healthy
+
+  environment:
+    DB_HOST: db
+    DB_PORT: 5432
+    DB_NAME: agente_financeiro
+    DB_USER: postgres
+    DB_PASS: postgres
+
+    EXECUTION_INTERVAL: 3600  # 1 hora
+
+  volumes:
+    - ./data:/app/data
+    - ./logs:/app/logs
+
+  networks:
+    - agente_network
+
+  command: ["python", "main.py"]
+  
+
+# =========================================================
+
+# DASHBOARD (STREAMLIT)
+
+# =========================================================
+
+dashboard:
+  build: .
+  container_name: agente_dashboard
+  restart: unless-stopped
+
+  
+  depends_on:
+    db:
+      condition: service_healthy
+
+  ports:
+    - "8501:8501"
+
+  environment:
+    DB_HOST: db
+    DB_PORT: 5432
+    DB_NAME: agente_financeiro
+    DB_USER: postgres
+    DB_PASS: postgres
+
+  volumes:
+    - ./data:/app/data
+    - ./logs:/app/logs
+
+  networks:
+    - agente_network
+
+  command: [
+    "streamlit", "run", "dashboard.py",
+    "--server.port=8501",
+    "--server.address=0.0.0.0"
+  ]
+  
+
+# =========================================================
+
+# N8N - AUTOMAÇÃO / WEBHOOKS
+
+# =========================================================
+
+n8n:
+  image: n8nio/n8n
+  container_name: agente_n8n
+  restart: unless-stopped
+
+  
+  ports:
+    - "5678:5678"
+
+  environment:
+    N8N_BASIC_AUTH_ACTIVE: "true"
+    N8N_BASIC_AUTH_USER: admin
+    N8N_BASIC_AUTH_PASSWORD: admin
+
+  volumes:
+    - n8n_data:/home/node/.n8n
+
+  networks:
+    - agente_network
+  
+
+# ============================================================
+
+# VOLUMES (PERSISTÊNCIA)
+
+# ============================================================
+
+volumes:
+postgres_data:
+n8n_data:
+
+# ============================================================
+
+# REDE ISOLADA
+
+# ============================================================
+
+networks:
+agente_network:
+driver: bridge
