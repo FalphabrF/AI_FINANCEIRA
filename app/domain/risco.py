@@ -27,9 +27,9 @@
 import numpy as np
 import pandas as pd
 
-from core.logger import logger
-from core.config import RISK_CONFIG
-from execution.broker_simulado import obter_portfolio, calcular_patrimonio
+from app.core.logger import logger
+from app.core.config import RISK_CONFIG
+from app.execution.broker_simulado import obter_portfolio, calcular_patrimonio
 
 # ============================================================
 

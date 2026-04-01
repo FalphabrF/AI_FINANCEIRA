@@ -26,8 +26,8 @@
 
 import numpy as np
 
-from core.config import SCORING_CONFIG
-from core.logger import logger
+from app.core.config import SCORING_CONFIG
+from app.core.logger import logger
 
 # ============================================================
 

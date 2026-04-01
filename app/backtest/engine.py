@@ -43,22 +43,22 @@
 import time
 from typing import List, Dict
 
-from core.logger import logger
+from app.core.logger import logger
 
 # Agentes
 
-from agents.agente_compra import AgenteCompra
-from agents.agente_venda import AgenteVenda
-from agents.agente_financeiro import AgenteFinanceiro
+from app.agents.agente_compra import AgenteCompra
+from app.agents.agente_venda import AgenteVenda
+from app.agents.agente_financeiro import AgenteFinanceiro
 
 # Integrações
 
-from integrations.n8n_hooks import N8NHooks
+from app.automation.n8n_hooks import N8NHooks
 
 # Dados
 
-from data.coleta_dados import pegar_dados_reais
-from data.posicoes import obter_posicoes_abertas
+from app.data.coleta_dados import pegar_dados_reais
+from app.data.coleta_dados import obter_posicoes_abertas
 
 class Engine:
     """

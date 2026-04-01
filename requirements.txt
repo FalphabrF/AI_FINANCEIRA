@@ -101,6 +101,8 @@ pydantic==2.7.4
 
 # ============================================================
 
+streamlit-autorefresh
+
 # OBS:
 
 # - Não usar versões soltas (sem ==)

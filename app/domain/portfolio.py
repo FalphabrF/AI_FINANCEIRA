@@ -29,10 +29,10 @@
 import pandas as pd
 import numpy as np
 
-from core.logger import logger
-from core.config import PORTFOLIO_CONFIG
+from app.core.logger import logger
+from app.core.config import PORTFOLIO_CONFIG
 
-from execution.broker_simulado import obter_portfolio
+from app.execution.broker_simulado import obter_portfolio
 
 # ============================================================
 

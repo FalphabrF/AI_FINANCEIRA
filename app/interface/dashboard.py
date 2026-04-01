@@ -26,7 +26,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from core.connection import fetch_dataframe
+from app.database.connection import fetch_dataframe
+from streamlit_autorefresh import st_autorefresh
 
 # ============================================================
 
@@ -197,4 +198,4 @@ else:
 
 st.markdown("---")
 st.caption("Atualização automática a cada 30 segundos")
-st.experimental_rerun()
+st_autorefresh(interval=10000)

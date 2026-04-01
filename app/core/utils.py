@@ -34,8 +34,8 @@ import pandas as pd
 from functools import wraps
 from typing import Callable, Any, Dict
 
-from core.config import DB_CONFIG
-from core.logger import logger
+from app.core.config import DB_CONFIG
+from app.core.logger import logger
 
 # ============================================================
 

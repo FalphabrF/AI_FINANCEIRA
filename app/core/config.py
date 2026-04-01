@@ -76,14 +76,33 @@ DEBUG = get_env("DEBUG", True, bool)
 # ============================================================
 
 @dataclass
-class DatabaseConfig:
-    host: str = get_env("DB_HOST", "localhost")
-    port: int = get_env("DB_PORT", 5432, int)
-    name: str = get_env("DB_NAME", "agente_financeiro")
-    user: str = get_env("DB_USER", "postgres")
-    password: str = get_env("DB_PASS", "postgres")
+# ============================================================
+# DATABASE CONFIG
+# ============================================================
 
-    DB_CONFIG = DatabaseConfig()
+class TradingConfig:
+    SCORE_MINIMO_COMPRA = 60
+    STOP_LOSS = 0.15
+    TAKE_PROFIT = 0.25
+
+
+class DatabaseConfig:
+    """
+    Configuração de conexão com PostgreSQL.
+    """
+
+    def __init__(self):
+
+        self.host = os.getenv("DB_HOST", "localhost")
+        self.port = int(os.getenv("DB_PORT", 5432))
+        self.name = os.getenv("DB_NAME", "agente_financeiro")
+        self.user = os.getenv("DB_USER", "postgres")
+        self.password = os.getenv("DB_PASS", "postgres")
+
+
+# Instância global
+DB_CONFIG = DatabaseConfig()
+CONFIG = TradingConfig()
 
 # ============================================================
 
@@ -96,7 +115,7 @@ class APIConfig:
     corretora_url: str = get_env("API_CORRETORA", "")
     timeout: int = get_env("API_TIMEOUT", 10, int)
 
-    API_CONFIG = APIConfig()
+API_CONFIG = APIConfig()
 
 # ============================================================
 
@@ -109,7 +128,7 @@ class N8NConfig:
     webhook_url: str = get_env("N8N_WEBHOOK_URL", "http://n8n:5678/webhook/agente")
     timeout: int = get_env("N8N_TIMEOUT", 10, int)
 
-    N8N_CONFIG = N8NConfig()
+N8N_CONFIG = N8NConfig()
 
 # ============================================================
 
@@ -122,7 +141,7 @@ class CapitalConfig:
     capital_inicial: float = get_env("CAPITAL_INICIAL", 10000, float)
     percentual_alocacao: float = get_env("PCT_ALOCACAO", 0.5, float)
 
-    CAPITAL_CONFIG = CapitalConfig()
+CAPITAL_CONFIG = CapitalConfig()
 
 # ============================================================
 
@@ -137,7 +156,7 @@ class RiskConfig:
     max_exposicao_por_ativo: float = get_env("MAX_EXPOSICAO_ATIVO", 0.2, float)
     max_exposicao_total: float = get_env("MAX_EXPOSICAO_TOTAL", 0.7, float)
 
-    RISK_CONFIG = RiskConfig()
+RISK_CONFIG = RiskConfig()
 
 # ============================================================
 
@@ -157,7 +176,7 @@ class ModelConfig:
     peso_liquidez: float = get_env("PESO_LIQUIDEZ", 0.1, float)
 
 
-    MODEL_CONFIG = ModelConfig()
+MODEL_CONFIG = ModelConfig()
 
 # ============================================================
 
@@ -169,7 +188,7 @@ class ModelConfig:
 class EngineConfig:
     intervalo_execucao: int = get_env("INTERVALO_EXECUCAO", 3600, int)
 
-    ENGINE_CONFIG = EngineConfig()
+ENGINE_CONFIG = EngineConfig()
 
 # ============================================================
 
@@ -182,7 +201,7 @@ class LoggingConfig:
     nivel: str = get_env("LOG_LEVEL", "INFO")
     arquivo: str = get_env("LOG_FILE", "data/logs/execucao.log")
 
-    LOG_CONFIG = LoggingConfig()
+LOG_CONFIG = LoggingConfig()
 
 # ============================================================
 

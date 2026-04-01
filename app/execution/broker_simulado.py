@@ -32,8 +32,8 @@ import uuid
 import random
 from datetime import datetime
 
-from core.connection import execute_query, fetch_dataframe, transacao
-from core.logger import logger
+from app.database.connection import execute_query, fetch_dataframe, transacao
+from app.core.logger import logger
 
 # ============================================================
 

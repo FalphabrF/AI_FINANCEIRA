@@ -36,8 +36,8 @@ import requests
 from typing import Dict, Optional
 from datetime import datetime
 
-from core.logger import logger
-from core.config import N8N_WEBHOOK_URL
+from app.core.logger import logger
+from app.core.config import N8N_WEBHOOK_URL
 
 # ============================================================
 
